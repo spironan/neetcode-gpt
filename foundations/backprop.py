@@ -19,7 +19,9 @@ class Solution:
         z = np.dot(x, w) + b
         y_hat = self.sigmoid(z)
         # loss = 0.5 * ((y_hat - y_true) ** 2) # loss is never used.
-        delta = (y_hat - y_true) * y_hat * (1.0 - y_hat) # <- scalar, shared term
-        dL_dw = delta * x
-        dL_db = delta
-        return (np.round(dL_dw,5), np.round(dL_db, 5))
+        error = y_hat - y_true
+        sigmoid_deriv = y_hat * (1.0 - y_hat)
+        delta = error * sigmoid_deriv # <- scalar, shared term
+        dL_dw = np.round(delta * x, 5)
+        dL_db = np.round(delta, 5)
+        return (dL_dw, dL_db)
