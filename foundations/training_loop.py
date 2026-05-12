@@ -10,12 +10,17 @@ class Solution:
         n = X.shape[0] # number of features
 
         for _ in range(epochs):
+            # forward pass
             y_hat = X @ w + b
-            MSE = (1/n) * sum(np.pow(y_hat - y, 2))
-            gradient_w = 2/n * X.T @ (y_hat - y)
-            gradient_b = 2/n * sum(y_hat - y)
-            w = w - lr * gradient_w
-            b = b - lr * gradient_b
+            error = y_hat - y
+
+            # compute gradients of MSE loss
+            dw = 2.0/n * X.T @ error
+            db = 2.0/n * np.sum(error)
+            
+            # update weights 
+            w = w - lr * dw
+            b = b - lr * db
 
         return (np.round(w, 5), round(b, 5))
         # X: (n_samples, n_features)
