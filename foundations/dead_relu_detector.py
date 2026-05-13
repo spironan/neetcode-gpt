@@ -23,23 +23,21 @@ class Solution:
         if dead_fractions[0] > 0.3:
             return "reinitialize"
         
+        always_inc = True
+        curr_rate = dead_fractions[0]
         for frac in dead_fractions:
             if frac > 0.5:
                 return "use_leaky_relu"
-        
-        
-        curr_rate = dead_fractions[0]
-        final_rate = dead_fractions[-1]
-        if final_rate < 0.1:
-            return "healthy"
-
-        for frac in dead_fractions:
             if frac >= curr_rate:
                 curr_rate = frac
             else:
-                return "healthy"
+                always_inc = False
         
-        return "reduce_learning_rate"
+        final_rate = dead_fractions[-1]
+        if always_inc and final_rate > 0.1:
+            return "reduce_learning_rate"
+            
+        return "healthy"
 
         # Given dead fractions per ReLU layer, suggest a fix.
         # Check in this order:
