@@ -20,12 +20,13 @@ class Solution:
         pass
 
     def suggest_fix(self, dead_fractions: List[float]) -> str:
+        if dead_fractions[0] > 0.3:
+            return "reinitialize"
+        
         for frac in dead_fractions:
             if frac > 0.5:
                 return "use_leaky_relu"
         
-        if dead_fractions[0] > 0.3:
-            return "reinitialize"
         
         curr_rate = dead_fractions[0]
         final_rate = dead_fractions[-1]
