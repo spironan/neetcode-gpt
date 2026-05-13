@@ -7,14 +7,28 @@ class Solution:
     def get_dataset(self, positive: List[str], negative: List[str]) -> TensorType[float]:
         words = [word for sentence in positive + negative for word in sentence.split()]
         vocab = sorted(set(words))
-        lookup = {word: index + 1 for index, word in enumerate(vocab)}
+        lookup = {}
+        for index, word in enumerate(vocab):
+            lookup[word] = index + 1
         
         output : TensorType[float] = []
 
         combine = positive + negative
         for sentence in combine:
-            row = [lookup[word] for word in sentence.split()]
+            row = []
+            words = sentence.split()
+            for word in words:
+                row.append(lookup[word])
+
             output.append(torch.tensor(row))
+                
+        # for sentence in negative:
+        #     row = []
+        #     words = sentence.split()
+        #     for word in words:
+        #         row.append(lookup[word])
+
+        #     output.append(torch.tensor(row))
         
         # finally we pad shorter sequences with 0s
         output = nn.utils.rnn.pad_sequence(output, batch_first=True)
