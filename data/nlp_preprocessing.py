@@ -7,9 +7,7 @@ class Solution:
     def get_dataset(self, positive: List[str], negative: List[str]) -> TensorType[float]:
         words = [word for sentence in positive + negative for word in sentence.split()]
         vocab = sorted(set(words))
-        lookup = {}
-        for index, word in enumerate(vocab):
-            lookup[word] = index + 1
+        lookup = {word: index + 1 for index, word in enumerate(vocab)}
         
         output : TensorType[float] = []
 
