@@ -13,7 +13,8 @@ class Solution:
         
         output : TensorType[float] = []
 
-        for sentence in positive:
+        combine = positive + negative
+        for sentence in combine:
             row = []
             words = sentence.split()
             for word in words:
@@ -21,13 +22,13 @@ class Solution:
 
             output.append(torch.tensor(row))
                 
-        for sentence in negative:
-            row = []
-            words = sentence.split()
-            for word in words:
-                row.append(lookup[word])
+        # for sentence in negative:
+        #     row = []
+        #     words = sentence.split()
+        #     for word in words:
+        #         row.append(lookup[word])
 
-            output.append(torch.tensor(row))
+        #     output.append(torch.tensor(row))
         
         # finally we pad shorter sequences with 0s
         output = nn.utils.rnn.pad_sequence(output, batch_first=True)
